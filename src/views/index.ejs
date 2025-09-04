@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>SYSLOG → CEF Bridge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Cargamos estilos (no comentamos CSS según lo pedido) -->
+    <link href="/static/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Título + “pill” de estado (running/detenido) para feedback inmediato -->
+    <h1>
+      SYSLOG → CEF Bridge
+      <span class="pill" id="status"><%= cfg.running ? 'en ejecución' : 'detenido' %></span>
+    </h1>
+
+    <!-- Subtítulo de ayuda -->
+    <p class="small">Configura puertos y host de salida, inicia el servicio, y visualiza la última trama traducida.</p>
+
+    <!-- ====================== Tarjeta de Configuración ====================== -->
+    <div class="card">
+      <h2>Configuración</h2>
+
+      <!-- Bloque “Servicio”: label arriba, botones debajo (según requisitos) -->
+      <div class="row service-row">
+        <div class="group vertical">
+          <label>Servicio:</label>
+          <div class="btn-group">
+            <button class="primary" id="startBtn">Iniciar</button>
+            <button class="danger"  id="stopBtn">Detener</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloque de Entrada/Salida: cada label arriba y sus campos debajo -->
+      <div class="row config-row">
+        <!-- Entrada SYSLOG (protocolo + puerto) -->
+        <div class="group vertical">
+          <label>Entrada (SYSLOG)</label>
+          <div class="inline-row">
+            <select id="inProto">
+              <option value="udp" <%= cfg.input.protocol==='udp'?'selected':'' %>>UDP</option>
+              <option value="tcp" <%= cfg.input.protocol==='tcp'?'selected':'' %>>TCP</option>
+            </select>
+            <input id="inPort" type="number" min="1" max="65535" value="<%= cfg.input.port %>" />
+          </div>
+        </div>
+
+        <!-- Salida CEF (host + protocolo + puerto) -->
+        <div class="group vertical">
+          <label>Salida (CEF)</label>
+          <div class="inline-row">
+            <!-- Requisito: Host/IP de salida antes del selector de protocolo -->
+            <input id="outHost" type="text" value="<%= cfg.output.host %>" placeholder="127.0.0.1" />
+            <select id="outProto">
+              <option value="udp" <%= cfg.output.protocol==='udp'?'selected':'' %>>UDP</option>
+              <option value="tcp" <%= cfg.output.protocol==='tcp'?'selected':'' %>>TCP</option>
+            </select>
+            <input id="outPort" type="number" min="1" max="65535" value="<%= cfg.output.port %>" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones “Guardar/Recargar” de la configuración (no arrancan sockets) -->
+      <div class="row actions-row">
+        <button class="primary" id="saveBtn">Guardar</button>
+        <button class="muted"   id="reloadBtn">Recargar</button>
+      </div>
+
+      <!-- Mensajes cortos de feedback (errores/ok) -->
+      <p class="small" id="msg"></p>
+    </div>
+
+    <!-- ====================== Tarjeta de Visualización ====================== -->
+    <div class="card">
+      <h2>Visualizador</h2>
+
+      <!-- Metadatos (fecha y origen del último evento) -->
+      <p class="small" id="meta"></p>
+
+      <!-- Textarea con la última trama SYSLOG recibida -->
+      <label>Trama recibida (SYSLOG)</label>
+      <textarea id="raw" readonly></textarea>
+
+      <!-- Textarea con la traducción CEF que se ha emitido -->
+      <label>Trama traducida (CEF)</label>
+      <textarea id="cef" readonly></textarea>
+    </div>
+
+    <!-- JS de la UI: carga/guarda config, start/stop servicio, y SSE de muestras -->
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

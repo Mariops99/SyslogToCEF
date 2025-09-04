@@ -1,0 +1,44 @@
+body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
+h1 { margin-bottom: 0.2rem; }
+.card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; margin: 12px 0; }
+
+/* Layout general */
+.row { display:flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+.group { display:flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+
+/* NUEVO: para poner el label arriba y los controles debajo */
+.group.vertical { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+/* Fila interna que mantiene los campos en línea (protocolo/puerto/host) */
+.inline-row { display:flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+
+label { display:block; font-weight:600; }
+select, input[type=number], input[type=text] {
+  padding:8px; border-radius:8px; border:1px solid #ccc; width: 200px;
+}
+
+button { padding:10px 14px; border:0; border-radius:10px; cursor:pointer; margin-right:8px; }
+.primary { background:#0ea5e9; color:white; }
+.danger { background:#ef4444; color:white; }
+.muted  { background:#e5e7eb; color:#111827; }
+.small  { color:#6b7280; font-size:12px; }
+.pill   { display:inline-block; padding:2px 8px; border-radius:999px; background:#f3f4f6; margin-left:6px; }
+
+/* Espaciados */
+.service-row { margin-top: 6px; margin-bottom: 14px; }
+.config-row  { margin-bottom: 12px; }
+.actions-row { margin-top: 4px; }
+
+/* Textareas dentro del card (no sobresalen) */
+textarea {
+  display:block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 120px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  padding:10px;
+  box-sizing: border-box;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+.card { overflow: hidden; }
